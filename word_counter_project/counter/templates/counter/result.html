@@ -3,84 +3,164 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Word Counter Results</title>
+    <title>Count Result</title>
     <style>
+      /* Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
       body {
-        background-color: rgb(88, 126, 104);
-        color: white;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: rgb(17, 14, 14);
         text-align: center;
-        font-family: Arial, sans-serif;
+        overflow: hidden;
         padding: 20px;
       }
 
       h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        animation: fadeInDown 1s ease forwards;
+      }
+
+      .result-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid white;
+        border-radius: 20px;
+        padding: 25px 35px;
+        max-width: 500px;
+        width: 100%;
+        animation: fadeInUp 1s ease forwards;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .result-card p {
+        font-size: 1.2rem;
         margin-bottom: 10px;
       }
 
-      p {
-        font-size: 18px;
-        margin-bottom: 20px;
+      .result-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 10px 0 20px;
+        color: #fff;
       }
 
-      .result-box {
-        background-color: rgb(2, 2, 2);
-        color: white;
-        border: 2px solid white;
-        border-radius: 10px;
-        padding: 20px;
-        width: 90%;
-        max-width: 800px;
-        margin: 0 auto 20px auto;
-        text-align: left;
-        font-size: 16px;
-        box-sizing: border-box;
-        overflow-wrap: break-word;
-      }
-
-      /* 👇 Placeholder styling for consistency */
-      textarea::placeholder,
-      input::placeholder {
-        color: #f0f0f0;
-        opacity: 1;
-      }
-
-      a {
-        background-color: white;
-        color: blue;
+      .back-link {
+        display: inline-block;
+        margin-top: 15px;
         padding: 10px 20px;
-        border-radius: 8px;
+        border: 2px solid white;
+        border-radius: 25px;
         text-decoration: none;
-        font-size: 16px;
-        transition: 0.3s ease;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
       }
 
-      a:hover {
-        background-color: lightgray;
+      .back-link:hover {
+        background-color: white;
+        color: #feb47b;
+        transform: scale(1.05);
       }
 
-      @media (max-width: 600px) {
-        .result-box {
-          font-size: 14px;
-        }
+      /* Floating background circles */
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.2;
+        animation: float 6s ease-in-out infinite;
+      }
+      .circle1 {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        top: 10%;
+        left: 15%;
+        animation-delay: 0s;
+      }
+      .circle2 {
+        width: 150px;
+        height: 150px;
+        background: #fff;
+        top: 70%;
+        left: 60%;
+        animation-delay: 2s;
+      }
+      .circle3 {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        top: 50%;
+        left: 80%;
+        animation-delay: 4s;
+      }
 
-        a {
-          font-size: 14px;
-          padding: 8px 16px;
+      /* Animations */
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-50px);
         }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      .error {
+        color: #ff6b6b;
+        margin-bottom: 15px;
       }
     </style>
   </head>
   <body>
-    <h1>Word & Letter Counter Result</h1>
-    <p>Your counting result is shown below:</p>
+    <!-- Floating background circles -->
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
 
-    <div class="result-box">
-      <p><strong>Original Text:</strong></p>
+    <h1>Count Result</h1>
+
+    <div class="result-card">
+      {% if message %}
+      <p>{{ message }}</p>
+      {% endif %} {% if result is not none %}
+      <div class="result-number">{{ result }}</div>
+      {% endif %} {% if text %}
+      <p><strong>Text Analyzed:</strong></p>
       <p>{{ text }}</p>
-      <hr />
-      <p><strong>Total Count:</strong> {{ result }}</p>
-    </div>
+      {% endif %}
 
-    <a href="{% url 'home' %}">Count Another</a>
+      <a class="back-link" href="{% url 'home' %}">Back to Home</a>
+    </div>
   </body>
 </html>

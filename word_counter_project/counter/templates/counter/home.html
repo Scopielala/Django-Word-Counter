@@ -5,16 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Counter</title>
     <style>
+      /* Basic reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
       body {
-        background-color: rgb(117, 172, 112);
-        color: white;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: rgb(26, 23, 23);
         text-align: center;
-        font-family: Arial, sans-serif;
-        padding: 20px;
+        overflow: hidden;
       }
 
       h1 {
-        margin-bottom: 20px;
+        font-size: 3rem;
+        margin-bottom: 2rem;
+        animation: fadeInDown 1.2s ease forwards;
       }
 
       form {
@@ -22,74 +36,163 @@
         flex-direction: column;
         align-items: center;
         gap: 15px;
-      }
-
-      textarea {
-        background-color: rgb(9, 10, 9);
-        color: white;
-        border: 2px solid white;
-        border-radius: 8px;
-        padding: 10px;
-        width: 90%;
-        max-width: 900px;
-        height: 70vh;
-        resize: vertical;
-        font-size: 16px;
-        box-sizing: border-box;
-      }
-
-      textarea::placeholder {
-        color: #f0f0f0;
-        opacity: 1;
-      }
-
-      button {
-        background-color: white;
-        color: blue;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.3s ease;
-      }
-
-      button:hover {
-        background-color: rgba(22, 21, 21, 0.582);
+        animation: fadeInUp 1.5s ease forwards,
+          floatForm 3s ease-in-out infinite;
       }
 
       .option-box {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 10px 15px;
-        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       select {
-        padding: 8px;
-        border-radius: 5px;
-        border: none;
-        font-size: 16px;
+        padding: 10px;
+        border-radius: 15px;
+        border: 2px solid white;
+        background: transparent;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
       }
 
-      @media (max-width: 600px) {
-        textarea {
-          font-size: 14px;
-          height: 60vh;
-        }
+      select:focus {
+        border-color: #feb47b;
+      }
 
-        button {
-          font-size: 16px;
-          padding: 8px 16px;
+      textarea {
+        width: 500px;
+        height: 200px;
+        border-radius: 15px;
+        border: 2px solid white;
+        padding: 10px;
+        font-size: 1rem;
+        text-align: left;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1.5s ease forwards;
+        spellcheck: false;
+        cursor: text; /* Explicit text cursor */
+      }
+
+      textarea:focus {
+        border-color: #feb47b;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 10px #feb47b;
+        outline: none;
+      }
+
+      /* Fix browser autofill yellow */
+      textarea:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+        -webkit-text-fill-color: white !important;
+      }
+
+      button {
+        padding: 12px 25px;
+        border: 2px solid white;
+        border-radius: 25px;
+        background: transparent;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1.5s ease forwards;
+      }
+
+      button:hover {
+        background-color: white;
+        color: #feb47b;
+        transform: scale(1.1);
+      }
+
+      /* Floating background circles */
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.2;
+        animation: float 6s ease-in-out infinite;
+      }
+      .circle1 {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        top: 10%;
+        left: 15%;
+        animation-delay: 0s;
+      }
+      .circle2 {
+        width: 150px;
+        height: 150px;
+        background: #fff;
+        top: 70%;
+        left: 60%;
+        animation-delay: 2s;
+      }
+      .circle3 {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        top: 50%;
+        left: 80%;
+        animation-delay: 4s;
+      }
+
+      /* Animations */
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-50px);
         }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      @keyframes floatForm {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .error {
+        color: #ff6b6b;
+        margin-bottom: 10px;
       }
     </style>
   </head>
   <body>
+    <!-- Floating circles -->
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+
     <h1>Word & Letter Counter</h1>
 
     <form id="counterForm" action="{% url 'count' %}" method="POST">
       {% csrf_token %}
-
       <div class="option-box">
         <label for="count_type">Choose counting method:</label>
         <select id="count_type" name="count_type">
@@ -101,33 +204,33 @@
       <textarea
         name="text"
         id="textInput"
-        rows="40"
-        cols="80"
         placeholder="Type or paste your text here..."
+        rows="10"
+        cols="50"
       ></textarea>
       <br />
       <button type="submit">Count</button>
     </form>
 
     <script>
-      document
-        .getElementById("textInput")
-        .addEventListener("keydown", function (event) {
-          if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            document.getElementById("counterForm").submit();
-          }
-        });
+      // Submit form on Enter (without Shift)
+      const textarea = document.getElementById("textInput");
+      const form = document.getElementById("counterForm");
 
-      document
-        .getElementById("counterForm")
-        .addEventListener("submit", function (event) {
-          const text = document.getElementById("textInput").value.trim();
-          if (text === "") {
-            event.preventDefault();
-            alert("You dey whine!");
-          }
-        });
+      textarea.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          form.submit();
+        }
+      });
+
+      // Prevent empty submission
+      form.addEventListener("submit", function (event) {
+        if (textarea.value.trim() === "") {
+          event.preventDefault();
+          alert("Please enter text to count!");
+        }
+      });
     </script>
   </body>
 </html>
